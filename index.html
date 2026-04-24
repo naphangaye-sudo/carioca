@@ -1,47 +1,518 @@
-🏠
-ACCUEIL
-📚
-VERBES
-💬
-EXPR.
-🗝️
-VOCAB.
-🎯
-QUIZ
-🤖
-IA
-📊
-STATS
-🇧🇷
-Português Carioca
-Apprends le portugais de Rio
-DÉBUTANT
-Modules
-📚
-Verbes
-15 verbes · 4 temps · conjugaisons
-›
-💬
-Expressions Cariocas
-30 expressions authentiques
-›
-🗝️
-Vocabulaire
-50 mots du quotidien
-›
-🎯
-Quiz Interactif
-Teste tes connaissances
-›
-🤖
-Conversation IA
-Parle & sois corrigé en temps réel
-›
-⏰ Sessions quotidiennes
-🌅
-8h00
-Matin · 30 min
-🌙
-20h00
-Soir · 15 min
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Carioca" />
+  <meta name="theme-color" content="#0d1117" />
+  <title>Português Carioca</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:#0a0f0d;--surface:#111a14;--card:#162019;--border:#1e3025;
+      --green:#2dcc70;--green-dim:#1a7a43;--gold:#f0c040;--blue:#4fc3f7;
+      --red:#ff6b6b;--text:#e8f5e9;--text-dim:#7a9980;
+      --user-bubble:#1a4a2a;--ai-bubble:#0e2318;
+    }
+    *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+    html,body{height:100%;}
+    body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);display:flex;flex-direction:column;height:100dvh;overflow:hidden;}
+    ::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px;}
 
+    .nav{display:flex;background:#0d1a10;border-bottom:1px solid var(--border);flex-shrink:0;overflow-x:auto;scrollbar-width:none;}
+    .nav::-webkit-scrollbar{display:none;}
+    .nav-btn{flex:1;min-width:52px;padding:10px 4px 8px;background:none;border:none;border-bottom:2px solid transparent;color:var(--text-dim);font-family:'DM Sans',sans-serif;font-size:0.58rem;font-weight:500;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;transition:all 0.2s;letter-spacing:0.04em;text-transform:uppercase;}
+    .nav-btn .icon{font-size:1.05rem;}
+    .nav-btn.active{color:var(--green);border-bottom-color:var(--green);}
+
+    .content{flex:1;overflow:hidden;display:flex;flex-direction:column;}
+    .page{display:none;flex:1;overflow-y:auto;padding:16px;flex-direction:column;gap:12px;}
+    .page.active{display:flex;}
+
+    .hero{background:linear-gradient(135deg,#0d2b1a 0%,#0a1f12 100%);border:1px solid var(--border);border-radius:16px;padding:16px 18px;display:flex;align-items:center;gap:12px;}
+    .hero-flag{font-size:2rem;}
+    .hero h1{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--green);}
+    .hero p{font-size:0.75rem;color:var(--text-dim);margin-top:2px;}
+    .hero .badge{margin-left:auto;background:var(--green-dim);color:var(--green);font-size:0.65rem;padding:4px 10px;border-radius:20px;font-weight:500;white-space:nowrap;}
+    .section-title{font-family:'Playfair Display',serif;font-size:0.95rem;color:var(--text-dim);letter-spacing:0.03em;padding-bottom:6px;border-bottom:1px solid var(--border);}
+
+    .verb-card{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;cursor:pointer;margin-bottom:10px;}
+    .verb-header{display:flex;align-items:center;padding:14px 16px;gap:10px;}
+    .verb-pt{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--green);}
+    .verb-fr{font-size:0.78rem;color:var(--text-dim);}
+    .verb-arrow{margin-left:auto;font-size:0.8rem;color:var(--text-dim);transition:transform 0.2s;}
+    .verb-card.open .verb-arrow{transform:rotate(180deg);}
+    .verb-body{display:none;padding:0 16px 14px;}
+    .verb-card.open .verb-body{display:block;}
+    .tense-tabs{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;scrollbar-width:none;}
+    .tense-tabs::-webkit-scrollbar{display:none;}
+    .tense-tab{flex-shrink:0;padding:5px 11px;background:var(--surface);border:1px solid var(--border);border-radius:20px;color:var(--text-dim);font-size:0.7rem;cursor:pointer;transition:all 0.2s;font-family:'DM Sans',sans-serif;}
+    .tense-tab.active{background:var(--green-dim);border-color:var(--green);color:var(--green);}
+    .conj-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
+    .conj-cell{background:var(--surface);border-radius:10px;padding:10px 12px;}
+    .conj-pro{font-size:0.65rem;color:var(--text-dim);}
+    .conj-pt{font-size:0.92rem;color:var(--text);font-weight:500;}
+    .conj-fr{font-size:0.68rem;color:var(--text-dim);font-style:italic;}
+    .example-box{background:rgba(45,204,112,0.06);border-left:3px solid var(--green-dim);border-radius:0 8px 8px 0;padding:10px 12px;font-size:0.8rem;}
+    .example-pt{color:var(--text);}
+    .example-fr{color:var(--text-dim);font-style:italic;margin-top:3px;font-size:0.74rem;}
+
+    .expr-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:13px 15px;display:flex;align-items:flex-start;gap:11px;margin-bottom:10px;}
+    .expr-emoji{font-size:1.3rem;flex-shrink:0;}
+    .expr-pt{font-size:0.92rem;color:var(--gold);font-weight:500;}
+    .expr-fr{font-size:0.78rem;color:var(--text-dim);margin-top:3px;}
+    .expr-ctx{font-size:0.7rem;color:var(--text-dim);margin-top:5px;font-style:italic;border-top:1px solid var(--border);padding-top:5px;}
+
+    .vocab-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+    .vocab-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 13px;}
+    .vocab-emoji{font-size:1.4rem;margin-bottom:5px;}
+    .vocab-pt{font-size:0.9rem;color:var(--text);font-weight:500;}
+    .vocab-fr{font-size:0.72rem;color:var(--text-dim);margin-top:2px;}
+    .vocab-cat{font-size:0.6rem;color:var(--green-dim);margin-top:4px;text-transform:uppercase;letter-spacing:0.06em;}
+
+    .quiz-score{display:flex;gap:10px;}
+    .score-box{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 16px;text-align:center;flex:1;}
+    .score-num{font-size:1.5rem;font-weight:700;color:var(--green);}
+    .score-lbl{font-size:0.65rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.05em;}
+    .quiz-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;}
+    .quiz-q{font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--text);margin-bottom:5px;}
+    .quiz-hint{font-size:0.73rem;color:var(--text-dim);margin-bottom:14px;}
+    .quiz-options{display:flex;flex-direction:column;gap:10px;}
+    .quiz-opt{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:11px 15px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.86rem;cursor:pointer;text-align:left;transition:all 0.2s;}
+    .quiz-opt:hover{border-color:var(--blue);color:var(--blue);}
+    .quiz-opt.correct{border-color:var(--green);background:rgba(45,204,112,0.1);color:var(--green);}
+    .quiz-opt.wrong{border-color:var(--red);background:rgba(255,107,107,0.1);color:var(--red);}
+    .quiz-feedback{margin-top:12px;padding:11px 15px;border-radius:10px;font-size:0.83rem;}
+    .quiz-feedback.ok{background:rgba(45,204,112,0.1);border:1px solid var(--green-dim);color:var(--green);}
+    .quiz-feedback.ko{background:rgba(255,107,107,0.1);border:1px solid #994040;color:var(--red);}
+    .next-btn{margin-top:12px;width:100%;padding:13px;background:var(--green);border:none;border-radius:12px;color:#0a0f0d;font-family:'DM Sans',sans-serif;font-weight:600;font-size:0.88rem;cursor:pointer;transition:all 0.2s;}
+    .next-btn:hover{background:#38e87e;}
+
+    .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+    .stat-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;text-align:center;}
+    .stat-icon{font-size:1.6rem;margin-bottom:7px;}
+    .stat-num{font-size:1.7rem;font-weight:700;color:var(--green);}
+    .stat-lbl{font-size:0.7rem;color:var(--text-dim);margin-top:4px;}
+
+    /* CHAT */
+    .chat-page{display:none;flex:1;overflow:hidden;flex-direction:column;}
+    .chat-page.active{display:flex;}
+    .themes{display:flex;gap:8px;padding:8px 14px;overflow-x:auto;flex-shrink:0;background:var(--surface);border-bottom:1px solid var(--border);scrollbar-width:none;}
+    .themes::-webkit-scrollbar{display:none;}
+    .theme-btn{flex-shrink:0;background:var(--card);border:1px solid var(--border);color:var(--text-dim);font-family:'DM Sans',sans-serif;font-size:0.73rem;padding:5px 13px;border-radius:20px;cursor:pointer;transition:all 0.2s;white-space:nowrap;}
+    .theme-btn.active{background:var(--green-dim);border-color:var(--green);color:var(--green);}
+    .messages{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:12px;}
+    .msg-row{display:flex;gap:9px;animation:fadeUp 0.3s ease;}
+    .msg-row.user{flex-direction:row-reverse;}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+    .avatar{width:30px;height:30px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:0.95rem;align-self:flex-end;}
+    .avatar.ai{background:var(--green-dim);}
+    .avatar.user{background:#1a3a4a;}
+    .bubble{max-width:78%;padding:11px 14px;border-radius:18px;font-size:0.85rem;line-height:1.55;}
+    .bubble.ai{background:var(--ai-bubble);border:1px solid var(--border);border-bottom-left-radius:4px;}
+    .bubble.user{background:var(--user-bubble);border:1px solid #2a5a3a;border-bottom-right-radius:4px;color:#c8f0d0;}
+    .correction{margin-top:9px;padding:9px 11px;background:rgba(240,192,64,0.08);border-left:3px solid var(--gold);border-radius:0 8px 8px 0;font-size:0.78rem;}
+    .clabel{color:var(--gold);font-size:0.66rem;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;}
+    .fixed{color:#f5e090;}
+    .explain{color:var(--text-dim);margin-top:4px;font-style:italic;}
+    .translation{margin-top:6px;font-size:0.74rem;color:var(--text-dim);font-style:italic;}
+    .encouragement{margin-top:6px;font-size:0.74rem;color:var(--green);}
+    .typing{display:flex;align-items:center;gap:5px;padding:11px 14px;background:var(--ai-bubble);border:1px solid var(--border);border-radius:18px;border-bottom-left-radius:4px;width:fit-content;}
+    .dot{width:6px;height:6px;background:var(--green-dim);border-radius:50%;animation:bounce 1.2s infinite;}
+    .dot:nth-child(2){animation-delay:0.2s;}.dot:nth-child(3){animation-delay:0.4s;}
+    @keyframes bounce{0%,60%,100%{transform:translateY(0);}30%{transform:translateY(-5px);background:var(--green);}}
+    .suggestions{display:flex;gap:8px;padding:7px 14px;overflow-x:auto;flex-shrink:0;scrollbar-width:none;}
+    .suggestions::-webkit-scrollbar{display:none;}
+    .suggestion{flex-shrink:0;background:var(--card);border:1px solid var(--border);color:var(--text-dim);font-family:'DM Sans',sans-serif;font-size:0.74rem;padding:5px 13px;border-radius:20px;cursor:pointer;transition:all 0.2s;white-space:nowrap;}
+    .suggestion:hover{border-color:var(--blue);color:var(--blue);background:rgba(79,195,247,0.07);}
+    .input-area{padding:9px 14px 16px;background:var(--surface);border-top:1px solid var(--border);flex-shrink:0;}
+    .input-row{display:flex;gap:9px;align-items:flex-end;}
+    .input-wrap{flex:1;background:var(--card);border:1px solid var(--border);border-radius:24px;display:flex;align-items:center;padding:3px 14px;transition:border-color 0.2s;}
+    .input-wrap:focus-within{border-color:var(--green-dim);}
+    textarea{flex:1;background:transparent;border:none;outline:none;color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.88rem;resize:none;padding:9px 0;max-height:100px;line-height:1.4;}
+    textarea::placeholder{color:var(--text-dim);}
+    .send-btn{width:42px;height:42px;border-radius:50%;background:var(--green);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;flex-shrink:0;}
+    .send-btn:hover{background:#38e87e;}.send-btn:disabled{background:var(--border);cursor:default;}
+    .send-btn svg{width:17px;height:17px;fill:#0a0f0d;}
+    .chat-hint{text-align:center;font-size:0.64rem;color:var(--text-dim);margin-top:5px;}
+    .welcome-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:15px;}
+    .welcome-card h3{font-family:'Playfair Display',serif;color:var(--green);font-size:0.92rem;margin-bottom:5px;}
+    .welcome-card p{font-size:0.79rem;color:var(--text-dim);line-height:1.5;}
+    .welcome-card .tip{margin-top:8px;padding:7px 11px;background:rgba(45,204,112,0.07);border-radius:8px;font-size:0.74rem;color:var(--green);}
+    .toast{position:fixed;top:70px;left:50%;transform:translateX(-50%) translateY(-20px);background:var(--gold);color:#1a1000;padding:9px 20px;border-radius:24px;font-weight:500;font-size:0.82rem;opacity:0;transition:all 0.4s;pointer-events:none;z-index:100;}
+    .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <button class="nav-btn active" onclick="showPage('home')"><span class="icon">🏠</span>Accueil</button>
+  <button class="nav-btn" onclick="showPage('verbes')"><span class="icon">📚</span>Verbes</button>
+  <button class="nav-btn" onclick="showPage('expressions')"><span class="icon">💬</span>Expr.</button>
+  <button class="nav-btn" onclick="showPage('vocabulaire')"><span class="icon">🗝️</span>Vocab.</button>
+  <button class="nav-btn" onclick="showPage('quiz')"><span class="icon">🎯</span>Quiz</button>
+  <button class="nav-btn" onclick="showPage('chat')"><span class="icon">🤖</span>IA</button>
+  <button class="nav-btn" onclick="showPage('stats')"><span class="icon">📊</span>Stats</button>
+</nav>
+
+<div class="content" id="content">
+  <!-- HOME -->
+  <div class="page active" id="page-home">
+    <div class="hero">
+      <span class="hero-flag">🇧🇷</span>
+      <div><h1>Português Carioca</h1><p>Apprends le portugais de Rio</p></div>
+      <span class="badge" id="levelBadge">DÉBUTANT</span>
+    </div>
+    <div class="section-title">Modules</div>
+    <div style="display:flex;flex-direction:column;gap:9px;">
+      <div onclick="showPage('verbes')" style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:13px;cursor:pointer;"><span style="font-size:1.6rem">📚</span><div><div style="font-size:0.92rem;font-weight:500">Verbes</div><div style="font-size:0.72rem;color:var(--text-dim)">15 verbes · 4 temps · conjugaisons</div></div><span style="margin-left:auto;color:var(--text-dim)">›</span></div>
+      <div onclick="showPage('expressions')" style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:13px;cursor:pointer;"><span style="font-size:1.6rem">💬</span><div><div style="font-size:0.92rem;font-weight:500">Expressions Cariocas</div><div style="font-size:0.72rem;color:var(--text-dim)">30 expressions authentiques</div></div><span style="margin-left:auto;color:var(--text-dim)">›</span></div>
+      <div onclick="showPage('vocabulaire')" style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:13px;cursor:pointer;"><span style="font-size:1.6rem">🗝️</span><div><div style="font-size:0.92rem;font-weight:500">Vocabulaire</div><div style="font-size:0.72rem;color:var(--text-dim)">50 mots du quotidien</div></div><span style="margin-left:auto;color:var(--text-dim)">›</span></div>
+      <div onclick="showPage('quiz')" style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:13px;cursor:pointer;"><span style="font-size:1.6rem">🎯</span><div><div style="font-size:0.92rem;font-weight:500">Quiz Interactif</div><div style="font-size:0.72rem;color:var(--text-dim)">Teste tes connaissances</div></div><span style="margin-left:auto;color:var(--text-dim)">›</span></div>
+      <div onclick="showPage('chat')" style="background:linear-gradient(135deg,#0d2b1a,#0a1a2e);border:1px solid #1e3a50;border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:13px;cursor:pointer;"><span style="font-size:1.6rem">🤖</span><div><div style="font-size:0.92rem;font-weight:500;color:var(--blue)">Conversation IA</div><div style="font-size:0.72rem;color:var(--text-dim)">Parle & sois corrigé en temps réel</div></div><span style="margin-left:auto;color:var(--text-dim)">›</span></div>
+    </div>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;">
+      <div style="font-size:0.72rem;color:var(--text-dim);text-align:center;margin-bottom:9px">⏰ Sessions quotidiennes</div>
+      <div style="display:flex;gap:10px;">
+        <div style="text-align:center;flex:1;background:var(--surface);border-radius:10px;padding:11px"><div style="font-size:1.1rem">🌅</div><div style="font-size:0.82rem;color:var(--green);font-weight:500">8h00</div><div style="font-size:0.67rem;color:var(--text-dim)">Matin · 30 min</div></div>
+        <div style="text-align:center;flex:1;background:var(--surface);border-radius:10px;padding:11px"><div style="font-size:1.1rem">🌙</div><div style="font-size:0.82rem;color:var(--green);font-weight:500">20h00</div><div style="font-size:0.67rem;color:var(--text-dim)">Soir · 15 min</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERBES -->
+  <div class="page" id="page-verbes">
+    <div class="section-title">📚 Verbes · 4 temps</div>
+    <div id="verbs-list"></div>
+  </div>
+
+  <!-- EXPRESSIONS -->
+  <div class="page" id="page-expressions">
+    <div class="section-title">💬 30 Expressions Cariocas</div>
+    <div id="expr-list"></div>
+  </div>
+
+  <!-- VOCABULAIRE -->
+  <div class="page" id="page-vocabulaire">
+    <div class="section-title">🗝️ 50 Mots de Vocabulaire</div>
+    <div class="vocab-grid" id="vocab-grid"></div>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="page" id="page-quiz">
+    <div class="quiz-score">
+      <div class="score-box"><div class="score-num" id="qScore">0</div><div class="score-lbl">Score</div></div>
+      <div class="score-box"><div class="score-num" id="qTotal">0</div><div class="score-lbl">Questions</div></div>
+      <div class="score-box"><div class="score-num" id="qPct">0%</div><div class="score-lbl">Réussite</div></div>
+    </div>
+    <div class="quiz-card" id="quiz-card"></div>
+  </div>
+
+  <!-- STATS -->
+  <div class="page" id="page-stats">
+    <div class="section-title">📊 Mes Statistiques</div>
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-icon">🎯</div><div class="stat-num" id="s-quiz">0</div><div class="stat-lbl">Quiz complétés</div></div>
+      <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-num" id="s-correct">0</div><div class="stat-lbl">Bonnes réponses</div></div>
+      <div class="stat-card"><div class="stat-icon">🔥</div><div class="stat-num" id="s-streak">0</div><div class="stat-lbl">Jours de suite</div></div>
+      <div class="stat-card"><div class="stat-icon">💬</div><div class="stat-num" id="s-msgs">0</div><div class="stat-lbl">Messages IA</div></div>
+      <div class="stat-card" style="grid-column:1/-1;"><div class="stat-icon">📈</div><div class="stat-num" id="s-pct">0%</div><div class="stat-lbl">Taux de réussite global</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- CHAT PAGE -->
+<div class="chat-page" id="page-chat">
+  <div class="themes" id="themes">
+    <button class="theme-btn active" data-theme="livre">💬 Libre</button>
+    <button class="theme-btn" data-theme="praia">🏖️ Praia</button>
+    <button class="theme-btn" data-theme="restaurante">🍖 Restaurante</button>
+    <button class="theme-btn" data-theme="futebol">⚽ Futebol</button>
+    <button class="theme-btn" data-theme="balada">🎉 Balada</button>
+    <button class="theme-btn" data-theme="taxi">🚕 Táxi</button>
+    <button class="theme-btn" data-theme="mercado">🛒 Mercado</button>
+  </div>
+  <div class="messages" id="messages">
+    <div class="msg-row">
+      <div class="avatar ai">🤖</div>
+      <div class="bubble ai">
+        <div class="welcome-card">
+          <h3>E aí, beleza? 👋</h3>
+          <p>Je suis ton prof de portugais carioca. Écris en portugais — même imparfait — je corrige !</p>
+          <div class="tip">💡 Essaie : <strong>"Oi, tudo bem?"</strong></div>
+        </div>
+      </div>
+    </div>
+    <div id="chat-bottom"></div>
+  </div>
+  <div class="suggestions" id="suggestions">
+    <button class="suggestion" onclick="useSuggestion(this)">Oi, tudo bem?</button>
+    <button class="suggestion" onclick="useSuggestion(this)">Qual é o seu nome?</button>
+    <button class="suggestion" onclick="useSuggestion(this)">Eu sou francês.</button>
+    <button class="suggestion" onclick="useSuggestion(this)">Onde fica a praia?</button>
+  </div>
+  <div class="input-area">
+    <div class="input-row">
+      <div class="input-wrap">
+        <textarea id="msgInput" placeholder="Escreve em português..." rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+      </div>
+      <button class="send-btn" id="sendBtn" onclick="sendMessage()">
+        <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+      </button>
+    </div>
+    <div class="chat-hint">Écris en portugais · Corrigé par l'IA · Répond en carioca 🇧🇷</div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const VERBS=[
+  {pt:"Ir",fr:"Aller",tenses:{presente:[{pro:"Eu",pt:"vou",fr:"je vais"},{pro:"Você",pt:"vai",fr:"tu vas"},{pro:"A gente",pt:"vai",fr:"on va"},{pro:"Nós",pt:"vamos",fr:"nous allons"}],perfeito:[{pro:"Eu",pt:"fui",fr:"je suis allé(e)"},{pro:"Você",pt:"foi",fr:"tu es allé(e)"},{pro:"A gente",pt:"foi",fr:"on est allé(e)"},{pro:"Nós",pt:"fomos",fr:"nous sommes allés"}],futuro:[{pro:"Eu",pt:"vou ir",fr:"je vais aller"},{pro:"Você",pt:"vai ir",fr:"tu vas aller"},{pro:"A gente",pt:"vai ir",fr:"on va aller"},{pro:"Nós",pt:"vamos ir",fr:"nous allons aller"}],imperfeito:[{pro:"Eu",pt:"ia",fr:"j'allais"},{pro:"Você",pt:"ia",fr:"tu allais"},{pro:"A gente",pt:"ia",fr:"on allait"},{pro:"Nós",pt:"íamos",fr:"nous allions"}]},example:"Eu fui à praia ontem.",exampleFr:"Je suis allé à la plage hier."},
+  {pt:"Estar",fr:"Être (état temp.)",tenses:{presente:[{pro:"Eu",pt:"estou/tô",fr:"je suis"},{pro:"Você",pt:"está/tá",fr:"tu es"},{pro:"A gente",pt:"tá",fr:"on est"},{pro:"Nós",pt:"estamos",fr:"nous sommes"}],perfeito:[{pro:"Eu",pt:"estive",fr:"j'ai été"},{pro:"Você",pt:"esteve",fr:"tu as été"},{pro:"A gente",pt:"esteve",fr:"on a été"},{pro:"Nós",pt:"estivemos",fr:"nous avons été"}],futuro:[{pro:"Eu",pt:"vou estar",fr:"je vais être"},{pro:"Você",pt:"vai estar",fr:"tu vas être"},{pro:"A gente",pt:"vai estar",fr:"on va être"},{pro:"Nós",pt:"vamos estar",fr:"nous allons être"}],imperfeito:[{pro:"Eu",pt:"estava",fr:"j'étais"},{pro:"Você",pt:"estava",fr:"tu étais"},{pro:"A gente",pt:"estava",fr:"on était"},{pro:"Nós",pt:"estávamos",fr:"nous étions"}]},example:"Eu tô de boa.",exampleFr:"Je suis tranquille."},
+  {pt:"Ser",fr:"Être (permanent)",tenses:{presente:[{pro:"Eu",pt:"sou",fr:"je suis"},{pro:"Você",pt:"é",fr:"tu es"},{pro:"A gente",pt:"é",fr:"on est"},{pro:"Nós",pt:"somos",fr:"nous sommes"}],perfeito:[{pro:"Eu",pt:"fui",fr:"j'ai été"},{pro:"Você",pt:"foi",fr:"tu as été"},{pro:"A gente",pt:"foi",fr:"on a été"},{pro:"Nós",pt:"fomos",fr:"nous avons été"}],futuro:[{pro:"Eu",pt:"vou ser",fr:"je vais être"},{pro:"Você",pt:"vai ser",fr:"tu vas être"},{pro:"A gente",pt:"vai ser",fr:"on va être"},{pro:"Nós",pt:"vamos ser",fr:"nous allons être"}],imperfeito:[{pro:"Eu",pt:"era",fr:"j'étais"},{pro:"Você",pt:"era",fr:"tu étais"},{pro:"A gente",pt:"era",fr:"on était"},{pro:"Nós",pt:"éramos",fr:"nous étions"}]},example:"Eu sou da Guiana Francesa.",exampleFr:"Je suis de la Guyane française."},
+  {pt:"Fazer",fr:"Faire",tenses:{presente:[{pro:"Eu",pt:"faço",fr:"je fais"},{pro:"Você",pt:"faz",fr:"tu fais"},{pro:"A gente",pt:"faz",fr:"on fait"},{pro:"Nós",pt:"fazemos",fr:"nous faisons"}],perfeito:[{pro:"Eu",pt:"fiz",fr:"j'ai fait"},{pro:"Você",pt:"fez",fr:"tu as fait"},{pro:"A gente",pt:"fez",fr:"on a fait"},{pro:"Nós",pt:"fizemos",fr:"nous avons fait"}],futuro:[{pro:"Eu",pt:"vou fazer",fr:"je vais faire"},{pro:"Você",pt:"vai fazer",fr:"tu vas faire"},{pro:"A gente",pt:"vai fazer",fr:"on va faire"},{pro:"Nós",pt:"vamos fazer",fr:"nous allons faire"}],imperfeito:[{pro:"Eu",pt:"fazia",fr:"je faisais"},{pro:"Você",pt:"fazia",fr:"tu faisais"},{pro:"A gente",pt:"fazia",fr:"on faisait"},{pro:"Nós",pt:"fazíamos",fr:"nous faisions"}]},example:"O que você fez ontem?",exampleFr:"Qu'est-ce que tu as fait hier ?"},
+  {pt:"Ter",fr:"Avoir",tenses:{presente:[{pro:"Eu",pt:"tenho",fr:"j'ai"},{pro:"Você",pt:"tem",fr:"tu as"},{pro:"A gente",pt:"tem",fr:"on a"},{pro:"Nós",pt:"temos",fr:"nous avons"}],perfeito:[{pro:"Eu",pt:"tive",fr:"j'ai eu"},{pro:"Você",pt:"teve",fr:"tu as eu"},{pro:"A gente",pt:"teve",fr:"on a eu"},{pro:"Nós",pt:"tivemos",fr:"nous avons eu"}],futuro:[{pro:"Eu",pt:"vou ter",fr:"je vais avoir"},{pro:"Você",pt:"vai ter",fr:"tu vas avoir"},{pro:"A gente",pt:"vai ter",fr:"on va avoir"},{pro:"Nós",pt:"vamos ter",fr:"nous allons avoir"}],imperfeito:[{pro:"Eu",pt:"tinha",fr:"j'avais"},{pro:"Você",pt:"tinha",fr:"tu avais"},{pro:"A gente",pt:"tinha",fr:"on avait"},{pro:"Nós",pt:"tínhamos",fr:"nous avions"}]},example:"Eu tenho fome.",exampleFr:"J'ai faim."},
+  {pt:"Querer",fr:"Vouloir",tenses:{presente:[{pro:"Eu",pt:"quero",fr:"je veux"},{pro:"Você",pt:"quer",fr:"tu veux"},{pro:"A gente",pt:"quer",fr:"on veut"},{pro:"Nós",pt:"queremos",fr:"nous voulons"}],perfeito:[{pro:"Eu",pt:"quis",fr:"j'ai voulu"},{pro:"Você",pt:"quis",fr:"tu as voulu"},{pro:"A gente",pt:"quis",fr:"on a voulu"},{pro:"Nós",pt:"quisemos",fr:"nous avons voulu"}],futuro:[{pro:"Eu",pt:"vou querer",fr:"je vais vouloir"},{pro:"Você",pt:"vai querer",fr:"tu vas vouloir"},{pro:"A gente",pt:"vai querer",fr:"on va vouloir"},{pro:"Nós",pt:"vamos querer",fr:"nous allons vouloir"}],imperfeito:[{pro:"Eu",pt:"queria",fr:"je voulais"},{pro:"Você",pt:"queria",fr:"tu voulais"},{pro:"A gente",pt:"queria",fr:"on voulait"},{pro:"Nós",pt:"queríamos",fr:"nous voulions"}]},example:"Eu quero uma caipirinha!",exampleFr:"Je veux une caïpirinha !"},
+  {pt:"Poder",fr:"Pouvoir",tenses:{presente:[{pro:"Eu",pt:"posso",fr:"je peux"},{pro:"Você",pt:"pode",fr:"tu peux"},{pro:"A gente",pt:"pode",fr:"on peut"},{pro:"Nós",pt:"podemos",fr:"nous pouvons"}],perfeito:[{pro:"Eu",pt:"pude",fr:"j'ai pu"},{pro:"Você",pt:"pôde",fr:"tu as pu"},{pro:"A gente",pt:"pôde",fr:"on a pu"},{pro:"Nós",pt:"pudemos",fr:"nous avons pu"}],futuro:[{pro:"Eu",pt:"vou poder",fr:"je vais pouvoir"},{pro:"Você",pt:"vai poder",fr:"tu vas pouvoir"},{pro:"A gente",pt:"vai poder",fr:"on va pouvoir"},{pro:"Nós",pt:"vamos poder",fr:"nous allons pouvoir"}],imperfeito:[{pro:"Eu",pt:"podia",fr:"je pouvais"},{pro:"Você",pt:"podia",fr:"tu pouvais"},{pro:"A gente",pt:"podia",fr:"on pouvait"},{pro:"Nós",pt:"podíamos",fr:"nous pouvions"}]},example:"Você pode me ajudar?",exampleFr:"Tu peux m'aider ?"},
+  {pt:"Falar",fr:"Parler",tenses:{presente:[{pro:"Eu",pt:"falo",fr:"je parle"},{pro:"Você",pt:"fala",fr:"tu parles"},{pro:"A gente",pt:"fala",fr:"on parle"},{pro:"Nós",pt:"falamos",fr:"nous parlons"}],perfeito:[{pro:"Eu",pt:"falei",fr:"j'ai parlé"},{pro:"Você",pt:"falou",fr:"tu as parlé"},{pro:"A gente",pt:"falou",fr:"on a parlé"},{pro:"Nós",pt:"falamos",fr:"nous avons parlé"}],futuro:[{pro:"Eu",pt:"vou falar",fr:"je vais parler"},{pro:"Você",pt:"vai falar",fr:"tu vas parler"},{pro:"A gente",pt:"vai falar",fr:"on va parler"},{pro:"Nós",pt:"vamos falar",fr:"nous allons parler"}],imperfeito:[{pro:"Eu",pt:"falava",fr:"je parlais"},{pro:"Você",pt:"falava",fr:"tu parlais"},{pro:"A gente",pt:"falava",fr:"on parlait"},{pro:"Nós",pt:"falávamos",fr:"nous parlions"}]},example:"Eu falo português carioca!",exampleFr:"Je parle le portugais carioca !"},
+  {pt:"Gostar",fr:"Aimer (de)",tenses:{presente:[{pro:"Eu",pt:"gosto de",fr:"j'aime"},{pro:"Você",pt:"gosta de",fr:"tu aimes"},{pro:"A gente",pt:"gosta de",fr:"on aime"},{pro:"Nós",pt:"gostamos de",fr:"nous aimons"}],perfeito:[{pro:"Eu",pt:"gostei de",fr:"j'ai aimé"},{pro:"Você",pt:"gostou de",fr:"tu as aimé"},{pro:"A gente",pt:"gostou de",fr:"on a aimé"},{pro:"Nós",pt:"gostamos de",fr:"nous avons aimé"}],futuro:[{pro:"Eu",pt:"vou gostar de",fr:"je vais aimer"},{pro:"Você",pt:"vai gostar de",fr:"tu vas aimer"},{pro:"A gente",pt:"vai gostar de",fr:"on va aimer"},{pro:"Nós",pt:"vamos gostar de",fr:"nous allons aimer"}],imperfeito:[{pro:"Eu",pt:"gostava de",fr:"j'aimais"},{pro:"Você",pt:"gostava de",fr:"tu aimais"},{pro:"A gente",pt:"gostava de",fr:"on aimait"},{pro:"Nós",pt:"gostávamos de",fr:"nous aimions"}]},example:"Eu gosto de samba!",exampleFr:"J'aime le samba !"},
+  {pt:"Achar",fr:"Penser/Trouver",tenses:{presente:[{pro:"Eu",pt:"acho",fr:"je pense"},{pro:"Você",pt:"acha",fr:"tu penses"},{pro:"A gente",pt:"acha",fr:"on pense"},{pro:"Nós",pt:"achamos",fr:"nous pensons"}],perfeito:[{pro:"Eu",pt:"achei",fr:"j'ai trouvé"},{pro:"Você",pt:"achou",fr:"tu as trouvé"},{pro:"A gente",pt:"achou",fr:"on a trouvé"},{pro:"Nós",pt:"achamos",fr:"nous avons trouvé"}],futuro:[{pro:"Eu",pt:"vou achar",fr:"je vais trouver"},{pro:"Você",pt:"vai achar",fr:"tu vas trouver"},{pro:"A gente",pt:"vai achar",fr:"on va trouver"},{pro:"Nós",pt:"vamos achar",fr:"nous allons trouver"}],imperfeito:[{pro:"Eu",pt:"achava",fr:"je pensais"},{pro:"Você",pt:"achava",fr:"tu pensais"},{pro:"A gente",pt:"achava",fr:"on pensait"},{pro:"Nós",pt:"achávamos",fr:"nous pensions"}]},example:"Eu acho o Rio incrível!",exampleFr:"Je trouve Rio incroyable !"},
+  {pt:"Comer",fr:"Manger",tenses:{presente:[{pro:"Eu",pt:"como",fr:"je mange"},{pro:"Você",pt:"come",fr:"tu manges"},{pro:"A gente",pt:"come",fr:"on mange"},{pro:"Nós",pt:"comemos",fr:"nous mangeons"}],perfeito:[{pro:"Eu",pt:"comi",fr:"j'ai mangé"},{pro:"Você",pt:"comeu",fr:"tu as mangé"},{pro:"A gente",pt:"comeu",fr:"on a mangé"},{pro:"Nós",pt:"comemos",fr:"nous avons mangé"}],futuro:[{pro:"Eu",pt:"vou comer",fr:"je vais manger"},{pro:"Você",pt:"vai comer",fr:"tu vas manger"},{pro:"A gente",pt:"vai comer",fr:"on va manger"},{pro:"Nós",pt:"vamos comer",fr:"nous allons manger"}],imperfeito:[{pro:"Eu",pt:"comia",fr:"je mangeais"},{pro:"Você",pt:"comia",fr:"tu mangeais"},{pro:"A gente",pt:"comia",fr:"on mangeait"},{pro:"Nós",pt:"comíamos",fr:"nous mangions"}]},example:"Vamos comer churrasco?",exampleFr:"On va manger du barbecue ?"},
+  {pt:"Saber",fr:"Savoir",tenses:{presente:[{pro:"Eu",pt:"sei",fr:"je sais"},{pro:"Você",pt:"sabe",fr:"tu sais"},{pro:"A gente",pt:"sabe",fr:"on sait"},{pro:"Nós",pt:"sabemos",fr:"nous savons"}],perfeito:[{pro:"Eu",pt:"soube",fr:"j'ai su"},{pro:"Você",pt:"soube",fr:"tu as su"},{pro:"A gente",pt:"soube",fr:"on a su"},{pro:"Nós",pt:"soubemos",fr:"nous avons su"}],futuro:[{pro:"Eu",pt:"vou saber",fr:"je vais savoir"},{pro:"Você",pt:"vai saber",fr:"tu vas savoir"},{pro:"A gente",pt:"vai saber",fr:"on va savoir"},{pro:"Nós",pt:"vamos saber",fr:"nous allons savoir"}],imperfeito:[{pro:"Eu",pt:"sabia",fr:"je savais"},{pro:"Você",pt:"sabia",fr:"tu savais"},{pro:"A gente",pt:"sabia",fr:"on savait"},{pro:"Nós",pt:"sabíamos",fr:"nous savions"}]},example:"Você sabe dançar samba?",exampleFr:"Tu sais danser la samba ?"},
+  {pt:"Vir",fr:"Venir",tenses:{presente:[{pro:"Eu",pt:"venho",fr:"je viens"},{pro:"Você",pt:"vem",fr:"tu viens"},{pro:"A gente",pt:"vem",fr:"on vient"},{pro:"Nós",pt:"vimos",fr:"nous venons"}],perfeito:[{pro:"Eu",pt:"vim",fr:"je suis venu(e)"},{pro:"Você",pt:"veio",fr:"tu es venu(e)"},{pro:"A gente",pt:"veio",fr:"on est venu(e)"},{pro:"Nós",pt:"viemos",fr:"nous sommes venus"}],futuro:[{pro:"Eu",pt:"vou vir",fr:"je vais venir"},{pro:"Você",pt:"vai vir",fr:"tu vas venir"},{pro:"A gente",pt:"vai vir",fr:"on va venir"},{pro:"Nós",pt:"vamos vir",fr:"nous allons venir"}],imperfeito:[{pro:"Eu",pt:"vinha",fr:"je venais"},{pro:"Você",pt:"vinha",fr:"tu venais"},{pro:"A gente",pt:"vinha",fr:"on venait"},{pro:"Nós",pt:"vínhamos",fr:"nous venions"}]},example:"De onde você veio?",exampleFr:"D'où tu viens ?"},
+  {pt:"Dar",fr:"Donner",tenses:{presente:[{pro:"Eu",pt:"dou",fr:"je donne"},{pro:"Você",pt:"dá",fr:"tu donnes"},{pro:"A gente",pt:"dá",fr:"on donne"},{pro:"Nós",pt:"damos",fr:"nous donnons"}],perfeito:[{pro:"Eu",pt:"dei",fr:"j'ai donné"},{pro:"Você",pt:"deu",fr:"tu as donné"},{pro:"A gente",pt:"deu",fr:"on a donné"},{pro:"Nós",pt:"demos",fr:"nous avons donné"}],futuro:[{pro:"Eu",pt:"vou dar",fr:"je vais donner"},{pro:"Você",pt:"vai dar",fr:"tu vas donner"},{pro:"A gente",pt:"vai dar",fr:"on va donner"},{pro:"Nós",pt:"vamos dar",fr:"nous allons donner"}],imperfeito:[{pro:"Eu",pt:"dava",fr:"je donnais"},{pro:"Você",pt:"dava",fr:"tu donnais"},{pro:"A gente",pt:"dava",fr:"on donnait"},{pro:"Nós",pt:"dávamos",fr:"nous donnions"}]},example:"Me dá uma cerveja!",exampleFr:"Donne-moi une bière !"},
+  {pt:"Ficar",fr:"Rester/Devenir",tenses:{presente:[{pro:"Eu",pt:"fico",fr:"je reste"},{pro:"Você",pt:"fica",fr:"tu restes"},{pro:"A gente",pt:"fica",fr:"on reste"},{pro:"Nós",pt:"ficamos",fr:"nous restons"}],perfeito:[{pro:"Eu",pt:"fiquei",fr:"je suis resté(e)"},{pro:"Você",pt:"ficou",fr:"tu es resté(e)"},{pro:"A gente",pt:"ficou",fr:"on est resté(e)"},{pro:"Nós",pt:"ficamos",fr:"nous sommes restés"}],futuro:[{pro:"Eu",pt:"vou ficar",fr:"je vais rester"},{pro:"Você",pt:"vai ficar",fr:"tu vas rester"},{pro:"A gente",pt:"vai ficar",fr:"on va rester"},{pro:"Nós",pt:"vamos ficar",fr:"nous allons rester"}],imperfeito:[{pro:"Eu",pt:"ficava",fr:"je restais"},{pro:"Você",pt:"ficava",fr:"tu restais"},{pro:"A gente",pt:"ficava",fr:"on restait"},{pro:"Nós",pt:"ficávamos",fr:"nous restions"}]},example:"Fica aqui comigo!",exampleFr:"Reste ici avec moi !"}
+];
+
+const TENSE_LABELS={presente:"Présent",perfeito:"Passé",futuro:"Futur",imperfeito:"Imparfait"};
+
+const EXPRESSIONS=[
+  {emoji:"👋",pt:"E aí?",fr:"Ça va ? / Quoi de neuf ?",ctx:"Salutation informelle très courante à Rio"},
+  {emoji:"😎",pt:"Tá de boa",fr:"C'est tranquille / Tout va bien",ctx:"Pour dire que tout se passe bien"},
+  {emoji:"🤙",pt:"Tá ligado?",fr:"Tu vois ce que je veux dire ?",ctx:"Cherche l'approbation de l'interlocuteur"},
+  {emoji:"🔥",pt:"Que legal!",fr:"C'est trop bien ! / Super !",ctx:"Enthousiasme, admiration"},
+  {emoji:"🚀",pt:"Show de bola!",fr:"Excellent ! Parfait !",ctx:"Très fort, utilisé pour féliciter"},
+  {emoji:"😂",pt:"Mó zueira!",fr:"C'est une blague ! / Trop drôle !",ctx:"Rigolade, humour"},
+  {emoji:"💪",pt:"Bora!",fr:"Allons-y ! On y va !",ctx:"Invitation à l'action, enthousiasme"},
+  {emoji:"😔",pt:"Que saudade!",fr:"Comme tu me manques ! / Le bon vieux temps...",ctx:"Nostalgie, manque de quelqu'un"},
+  {emoji:"🙌",pt:"Valeu!",fr:"Merci ! / Génial !",ctx:"Remerciement informel ou approbation"},
+  {emoji:"😡",pt:"Que mico!",fr:"Quelle honte ! / Gênant !",ctx:"Situation embarrassante"},
+  {emoji:"🤔",pt:"Cara, que isso?",fr:"Mec, c'est quoi ça ?",ctx:"Surprise, incompréhension"},
+  {emoji:"🎉",pt:"Arrasou!",fr:"Tu as assuré ! / Tu as tout déchiré !",ctx:"Félicitations enthousiastes"},
+  {emoji:"👍",pt:"Firmeza!",fr:"D'accord ! / Nickel !",ctx:"Confirmation, accord"},
+  {emoji:"😩",pt:"Que droga!",fr:"Zut ! / Mince !",ctx:"Déception, contrariété"},
+  {emoji:"🏄",pt:"Na moral",fr:"Sérieusement / Honnêtement",ctx:"Pour insister sur la sincérité"},
+  {emoji:"🤩",pt:"Da hora!",fr:"Trop cool ! / Au top !",ctx:"Quelque chose d'impressionnant"},
+  {emoji:"🙈",pt:"Que frescura!",fr:"Quelle chicherie ! / Arrête de faire le difficile !",ctx:"Quelqu'un qui se plaint pour rien"},
+  {emoji:"🗣️",pt:"Vou te falar...",fr:"Je vais te dire...",ctx:"Début d'une confidence ou d'un conseil"},
+  {emoji:"🤷",pt:"Sei lá",fr:"Je sais pas / Bof",ctx:"Indifférence ou ignorance"},
+  {emoji:"😏",pt:"Tá querendo o quê?",fr:"Tu cherches quoi là ?",ctx:"Suspicion ou taquinerie"},
+  {emoji:"🤣",pt:"Mó risada!",fr:"Trop drôle ! / J'étais plié !",ctx:"Quelque chose de très amusant"},
+  {emoji:"😬",pt:"Que barbada!",fr:"Quelle aubaine ! / Trop facile !",ctx:"Quelque chose d'évident ou facile"},
+  {emoji:"🌊",pt:"Partiu praia!",fr:"On part à la plage !",ctx:"Invitation spontanée à la plage"},
+  {emoji:"❤️",pt:"Saudade de você",fr:"Tu me manques",ctx:"Expression affectueuse, nostalgie"},
+  {emoji:"👊",pt:"Mano, acredita!",fr:"Mec, crois-moi !",ctx:"Insistance sur la vérité"},
+  {emoji:"🍺",pt:"Vamo beber!",fr:"On va boire un coup !",ctx:"Invitation à sortir boire"},
+  {emoji:"😮",pt:"Nossa!",fr:"Oh là là ! / Waouh !",ctx:"Surprise, étonnement (très courant)"},
+  {emoji:"🤝",pt:"Combinado!",fr:"C'est convenu ! / Marché conclu !",ctx:"Pour confirmer un accord"},
+  {emoji:"😤",pt:"Tô fudido",fr:"Je suis dans la merde",ctx:"Situation difficile (langage familier)"},
+  {emoji:"🌴",pt:"Que sossego!",fr:"Quel calme ! / Quelle paix !",ctx:"Apprécier un moment tranquille"}
+];
+
+const VOCAB=[
+  {emoji:"🥖",pt:"Padaria",fr:"Boulangerie",cat:"Ville"},{emoji:"🛒",pt:"Mercado",fr:"Marché / Supermarché",cat:"Ville"},
+  {emoji:"🏖️",pt:"Praia",fr:"Plage",cat:"Plage"},{emoji:"🚌",pt:"Ônibus",fr:"Bus",cat:"Transport"},
+  {emoji:"🌧️",pt:"Chuva",fr:"Pluie",cat:"Météo"},{emoji:"🌡️",pt:"Quente",fr:"Chaud",cat:"Météo"},
+  {emoji:"❄️",pt:"Frio",fr:"Froid",cat:"Météo"},{emoji:"🚕",pt:"Táxi",fr:"Taxi",cat:"Transport"},
+  {emoji:"💊",pt:"Farmácia",fr:"Pharmacie",cat:"Ville"},{emoji:"🥩",pt:"Açougue",fr:"Boucherie",cat:"Ville"},
+  {emoji:"🍖",pt:"Churrasco",fr:"Barbecue brésilien",cat:"Nourriture"},{emoji:"🫘",pt:"Feijoada",fr:"Ragoût de haricots noirs",cat:"Nourriture"},
+  {emoji:"🍹",pt:"Caipirinha",fr:"Cocktail brésilien",cat:"Nourriture"},{emoji:"🫐",pt:"Açaí",fr:"Baie d'açaï",cat:"Nourriture"},
+  {emoji:"🍞",pt:"Pão de queijo",fr:"Pain au fromage brésilien",cat:"Nourriture"},{emoji:"🍺",pt:"Cerveja",fr:"Bière",cat:"Nourriture"},
+  {emoji:"☕",pt:"Cafezinho",fr:"Petit café brésilien",cat:"Nourriture"},{emoji:"🐟",pt:"Peixe",fr:"Poisson",cat:"Nourriture"},
+  {emoji:"🍚",pt:"Arroz com feijão",fr:"Riz aux haricots",cat:"Nourriture"},{emoji:"🥭",pt:"Manga",fr:"Mangue",cat:"Nourriture"},
+  {emoji:"🍌",pt:"Banana",fr:"Banane",cat:"Nourriture"},{emoji:"🥥",pt:"Coco",fr:"Noix de coco",cat:"Nourriture"},
+  {emoji:"🫙",pt:"Cachaça",fr:"Eau-de-vie de canne",cat:"Nourriture"},{emoji:"🍤",pt:"Camarão",fr:"Crevette",cat:"Nourriture"},
+  {emoji:"🥗",pt:"Salada",fr:"Salade",cat:"Nourriture"},
+  {emoji:"👨‍👩‍👧",pt:"Família",fr:"Famille",cat:"Famille"},{emoji:"👨",pt:"Pai",fr:"Père",cat:"Famille"},
+  {emoji:"👩",pt:"Mãe",fr:"Mère",cat:"Famille"},{emoji:"🧒",pt:"Filho/Filha",fr:"Fils/Fille",cat:"Famille"},
+  {emoji:"❤️",pt:"Namorado/a",fr:"Petit(e) ami(e)",cat:"Famille"},{emoji:"💍",pt:"Marido/Esposa",fr:"Mari/Femme",cat:"Famille"},
+  {emoji:"🧓",pt:"Avô/Avó",fr:"Grand-père/Grand-mère",cat:"Famille"},{emoji:"👫",pt:"Amigo/a",fr:"Ami(e)",cat:"Famille"},
+  {emoji:"🤝",pt:"Colega",fr:"Collègue",cat:"Famille"},{emoji:"👶",pt:"Bebê",fr:"Bébé",cat:"Famille"},
+  {emoji:"🏄",pt:"Surfar",fr:"Surfer",cat:"Plage"},{emoji:"☀️",pt:"Sol",fr:"Soleil",cat:"Plage"},
+  {emoji:"🩱",pt:"Biquíni",fr:"Bikini",cat:"Plage"},{emoji:"🏐",pt:"Futevôlei",fr:"Volley-foot brésilien",cat:"Plage"},
+  {emoji:"🕶️",pt:"Óculos de sol",fr:"Lunettes de soleil",cat:"Plage"},{emoji:"🧴",pt:"Protetor solar",fr:"Crème solaire",cat:"Plage"},
+  {emoji:"🌊",pt:"Mar",fr:"Mer",cat:"Plage"},{emoji:"🏔️",pt:"Morro",fr:"Colline / Favela",cat:"Plage"},
+  {emoji:"⚽",pt:"Futebol",fr:"Football",cat:"Loisirs"},{emoji:"🎵",pt:"Funk carioca",fr:"Musique de Rio",cat:"Loisirs"},
+  {emoji:"💃",pt:"Samba",fr:"Samba (danse)",cat:"Loisirs"},{emoji:"🎭",pt:"Carnaval",fr:"Carnaval",cat:"Loisirs"},
+  {emoji:"🌙",pt:"Balada",fr:"Boîte de nuit / Soirée",cat:"Loisirs"},{emoji:"✈️",pt:"Aeroporto",fr:"Aéroport",cat:"Transport"},
+  {emoji:"🚇",pt:"Metrô",fr:"Métro",cat:"Transport"},{emoji:"🏨",pt:"Hotel",fr:"Hôtel",cat:"Transport"}
+];
+
+const THEMES_MAP={livre:"conversation libre",praia:"la plage à Rio",restaurante:"commander au restaurant brésilien",futebol:"le football brésilien",balada:"sortir en boîte à Rio",taxi:"prendre un taxi ou Uber à Rio",mercado:"faire les courses au marché brésilien"};
+const SUGS_MAP={livre:["Oi, tudo bem?","Qual é o seu nome?","De onde você é?","Eu sou francês."],praia:["Vamos à praia!","A água está boa?","Quero uma caipirinha!","Tem protetor solar?"],restaurante:["Qual é o prato do dia?","Quero uma feijoada.","A conta, por favor.","Tá gostoso!"],futebol:["Você torce pro Flamengo?","Assistiu o jogo?","A seleção vai ganhar!","Que placar foi?"],balada:["Vamos sair hoje?","Qual é a festa boa?","Adoro funk carioca!","Tô animado!"],taxi:["Me leva pro centro.","Quanto custa até Ipanema?","Tô com pressa!","Pode ir pela orla."],mercado:["Tem manga madura?","Quanto custa o quilo?","Quero açaí fresco.","Pode me ajudar?"]};
+
+// NAV
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.chat-page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('content').style.display='flex';
+  if(id==='chat'){
+    document.getElementById('content').style.display='none';
+    document.getElementById('page-chat').classList.add('active');
+  } else {
+    document.getElementById('page-'+id).classList.add('active');
+  }
+  document.querySelectorAll('.nav-btn').forEach((b,i)=>{
+    b.classList.toggle('active',['home','verbes','expressions','vocabulaire','quiz','chat','stats'][i]===id);
+  });
+  if(id==='stats') updateStats();
+}
+
+// VERBES
+const verbOpen={},verbTense={};
+function renderVerbs(){
+  const c=document.getElementById('verbs-list');c.innerHTML='';
+  VERBS.forEach((v,vi)=>{
+    if(!verbTense[vi])verbTense[vi]='presente';
+    const d=document.createElement('div');d.className='verb-card'+(verbOpen[vi]?' open':'');
+    d.innerHTML=`<div class="verb-header" onclick="toggleVerb(${vi})"><div><div class="verb-pt">${v.pt}</div><div class="verb-fr">${v.fr}</div></div><div class="verb-arrow">▼</div></div>
+    <div class="verb-body"><div class="tense-tabs">${Object.keys(TENSE_LABELS).map(t=>`<button class="tense-tab ${verbTense[vi]===t?'active':''}" onclick="setTense(${vi},'${t}',event)">${TENSE_LABELS[t]}</button>`).join('')}</div>
+    <div class="conj-grid">${v.tenses[verbTense[vi]].map(c=>`<div class="conj-cell"><div class="conj-pro">${c.pro}</div><div class="conj-pt">${c.pt}</div><div class="conj-fr">${c.fr}</div></div>`).join('')}</div>
+    <div class="example-box"><div class="example-pt">📝 ${v.example}</div><div class="example-fr">🇫🇷 ${v.exampleFr}</div></div></div>`;
+    c.appendChild(d);
+  });
+}
+function toggleVerb(i){verbOpen[i]=!verbOpen[i];renderVerbs();}
+function setTense(i,t,e){e.stopPropagation();verbTense[i]=t;renderVerbs();}
+
+// EXPRESSIONS
+function renderExpressions(){
+  document.getElementById('expr-list').innerHTML=EXPRESSIONS.map(e=>`<div class="expr-card"><span class="expr-emoji">${e.emoji}</span><div><div class="expr-pt">${e.pt}</div><div class="expr-fr">${e.fr}</div><div class="expr-ctx">${e.ctx}</div></div></div>`).join('');
+}
+
+// VOCAB
+function renderVocab(){
+  document.getElementById('vocab-grid').innerHTML=VOCAB.map(w=>`<div class="vocab-card"><div class="vocab-emoji">${w.emoji}</div><div class="vocab-pt">${w.pt}</div><div class="vocab-fr">${w.fr}</div><div class="vocab-cat">${w.cat}</div></div>`).join('');
+}
+
+// QUIZ
+let quizScore=0,quizTotal=0,quizAnswered=false,quizItems=[],quizIdx=0;
+function buildQuiz(){
+  const items=[];
+  VERBS.forEach(v=>{items.push({q:`"${v.fr}" → Eu (présent)`,correct:v.tenses.presente[0].pt});items.push({q:`"${v.fr}" → Eu (passé)`,correct:v.tenses.perfeito[0].pt});});
+  EXPRESSIONS.forEach(e=>{items.push({q:`Que signifie "${e.pt}" ?`,correct:e.fr});});
+  VOCAB.forEach(w=>{items.push({q:`Traduction de "${w.pt}"`,correct:w.fr});});
+  return items.sort(()=>Math.random()-0.5);
+}
+function renderQuiz(){
+  if(!quizItems.length||quizIdx>=quizItems.length){quizItems=buildQuiz();quizIdx=0;}
+  const item=quizItems[quizIdx];
+  const wrongs=quizItems.filter(i=>i.correct!==item.correct).map(i=>i.correct).sort(()=>Math.random()-0.5).slice(0,3);
+  const opts=[...wrongs,item.correct].sort(()=>Math.random()-0.5);
+  quizAnswered=false;
+  document.getElementById('quiz-card').innerHTML=`<div class="quiz-q">${item.q}</div><div class="quiz-hint">Choisis la bonne réponse :</div><div class="quiz-options">${opts.map(o=>`<button class="quiz-opt" onclick="answerQuiz('${o.replace(/'/g,"\\'")}','${item.correct.replace(/'/g,"\\'")}',this)">${o}</button>`).join('')}</div><div id="quiz-feedback"></div>`;
+  document.getElementById('qScore').textContent=quizScore;document.getElementById('qTotal').textContent=quizTotal;
+  document.getElementById('qPct').textContent=quizTotal>0?Math.round(quizScore/quizTotal*100)+'%':'0%';
+}
+function answerQuiz(chosen,correct,btn){
+  if(quizAnswered)return;quizAnswered=true;quizTotal++;
+  const ok=chosen===correct;if(ok)quizScore++;
+  document.querySelectorAll('.quiz-opt').forEach(b=>{b.disabled=true;if(b.textContent===correct)b.classList.add('correct');else if(b===btn&&!ok)b.classList.add('wrong');});
+  const fb=document.getElementById('quiz-feedback');fb.className='quiz-feedback '+(ok?'ok':'ko');
+  fb.innerHTML=ok?'✅ Perfeito! Muito bem!':`❌ Errado. A resposta era: <strong>${correct}</strong>`;
+  const nb=document.createElement('button');nb.className='next-btn';nb.textContent='Próxima questão →';nb.onclick=()=>{quizIdx++;renderQuiz();};
+  document.getElementById('quiz-card').appendChild(nb);
+  saveStats(ok);document.getElementById('qScore').textContent=quizScore;document.getElementById('qTotal').textContent=quizTotal;document.getElementById('qPct').textContent=Math.round(quizScore/quizTotal*100)+'%';
+}
+
+// STATS
+function saveStats(ok){
+  const s=JSON.parse(localStorage.getItem('carioca_stats')||'{}');
+  s.quiz=(s.quiz||0)+1;if(ok)s.correct=(s.correct||0)+1;
+  const today=new Date().toDateString();if(s.lastDay!==today){s.streak=(s.streak||0)+1;s.lastDay=today;}
+  localStorage.setItem('carioca_stats',JSON.stringify(s));
+}
+function updateStats(){
+  const s=JSON.parse(localStorage.getItem('carioca_stats')||'{}');
+  const msgs=parseInt(localStorage.getItem('carioca_msgs')||'0');
+  document.getElementById('s-quiz').textContent=s.quiz||0;document.getElementById('s-correct').textContent=s.correct||0;
+  document.getElementById('s-streak').textContent=s.streak||0;document.getElementById('s-msgs').textContent=msgs;
+  document.getElementById('s-pct').textContent=(s.quiz>0?Math.round((s.correct||0)/s.quiz*100):0)+'%';
+  const levels=[{n:'DÉBUTANT',m:0},{n:'INICIANTE',m:5},{n:'INTERMEDIÁRIO',m:12},{n:'AVANÇADO',m:25},{n:'CARIOCA! 🇧🇷',m:40}];
+  const total=msgs+(s.quiz||0);let lv=levels[0];for(const l of levels){if(total>=l.m)lv=l;}
+  document.getElementById('levelBadge').textContent=lv.n;
+}
+
+// CHAT IA
+let currentTheme='livre',chatMessages=[],chatLoading=false;
+document.querySelectorAll('.theme-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.theme-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');currentTheme=btn.dataset.theme;
+    const names={livre:"💬 Libre",praia:"🏖️ Praia",restaurante:"🍖 Restaurant",futebol:"⚽ Futebol",balada:"🎉 Balada",taxi:"🚕 Táxi",mercado:"🛒 Mercado"};
+    addAIBubble(`Novo tema: <strong>${names[currentTheme]||currentTheme}</strong>. Bora! 😄`);
+    updateSugs(currentTheme);
+  });
+});
+function updateSugs(t){
+  const l=SUGS_MAP[t]||SUGS_MAP.livre;
+  document.getElementById('suggestions').innerHTML=l.map(s=>`<button class="suggestion" onclick="useSuggestion(this)">${s}</button>`).join('');
+}
+function useSuggestion(btn){document.getElementById('msgInput').value=btn.textContent;sendMessage();}
+function autoResize(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,100)+'px';}
+function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();}}
+function scrollChat(){document.getElementById('chat-bottom').scrollIntoView({behavior:'smooth'});}
+function addUserBubble(text){
+  const r=document.createElement('div');r.className='msg-row user';
+  r.innerHTML=`<div class="avatar user">😊</div><div class="bubble user">${text}</div>`;
+  document.getElementById('messages').insertBefore(r,document.getElementById('chat-bottom'));scrollChat();
+}
+function addTyping(){
+  const r=document.createElement('div');r.className='msg-row';r.id='typing-row';
+  r.innerHTML=`<div class="avatar ai">🤖</div><div class="typing"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>`;
+  document.getElementById('messages').insertBefore(r,document.getElementById('chat-bottom'));scrollChat();
+}
+function removeTyping(){const t=document.getElementById('typing-row');if(t)t.remove();}
+function addAIBubble(html){
+  const r=document.createElement('div');r.className='msg-row';
+  r.innerHTML=`<div class="avatar ai">🤖</div><div class="bubble ai">${html}</div>`;
+  document.getElementById('messages').insertBefore(r,document.getElementById('chat-bottom'));scrollChat();
+}
+function parseJSON(text){const m=text.match(/\{[\s\S]*\}/);if(m){try{return JSON.parse(m[0]);}catch(e){}}return null;}
+
+async function sendMessage(){
+  const input=document.getElementById('msgInput');const text=input.value.trim();
+  if(!text||chatLoading)return;
+  input.value='';input.style.height='auto';chatLoading=true;document.getElementById('sendBtn').disabled=true;
+  addUserBubble(text);chatMessages.push({role:'user',content:text});
+  const msgs=parseInt(localStorage.getItem('carioca_msgs')||'0');localStorage.setItem('carioca_msgs',msgs+1);
+  addTyping();
+  const system=`Tu es un professeur de portugais carioca (Rio de Janeiro) passionné.
+Thème : ${THEMES_MAP[currentTheme]||'libre'}.
+RÉPONDS UNIQUEMENT EN JSON :
+{"response":"Ta réponse en portugais carioca (1-3 phrases avec expressions cariocas authentiques)","response_fr":"Traduction française","has_error":true/false,"correction":"Phrase corrigée si erreur sinon null","correction_explain":"Explication courte en français sinon null","encouragement":"Mot d'encouragement court en portugais"}
+Utilise des expressions : cara, mano, tá ligado, show de bola, da hora, valeu, beleza, Nossa!, bora, etc.`;
+  try{
+    const res=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,system,messages:chatMessages.slice(-12)})});
+    const data=await res.json();removeTyping();
+    const raw=data.content?.[0]?.text||'';const parsed=parseJSON(raw);
+    chatMessages.push({role:'assistant',content:raw});
+    if(parsed){
+      let html=`<div>${parsed.response}</div>`;
+      if(parsed.response_fr)html+=`<div class="translation">🇫🇷 ${parsed.response_fr}</div>`;
+      if(parsed.has_error&&parsed.correction)html+=`<div class="correction"><div class="clabel">✏️ Correction</div><div class="fixed">✅ ${parsed.correction}</div>${parsed.correction_explain?`<div class="explain">${parsed.correction_explain}</div>`:''}</div>`;
+      if(parsed.encouragement)html+=`<div class="encouragement">💚 ${parsed.encouragement}</div>`;
+      addAIBubble(html);
+    } else {addAIBubble(raw||"Desculpa, problema técnico. Tente de novo! 😅");}
+  }catch(err){removeTyping();addAIBubble("Ops! Problema de conexão. Tente de novo! 😅");}
+  chatLoading=false;document.getElementById('sendBtn').disabled=false;
+}
+
+// INIT
+renderVerbs();renderExpressions();renderVocab();renderQuiz();updateStats();
+</script>
+</body>
+</html>
