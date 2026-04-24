@@ -12,7 +12,7 @@ module.exports = async function(req, res) {
   if (!API_KEY) { res.status(500).json({ error: 'API key not configured' }); return; }
 
   const payload = JSON.stringify({
-    model: "claude-sonnet-4-20250514",
+    model: "claude-haiku-4-5-20251001",
     max_tokens: req.body.max_tokens || 1000,
     system: req.body.system || "",
     messages: req.body.messages || [],
